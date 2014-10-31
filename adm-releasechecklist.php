@@ -4,7 +4,7 @@ Plugin Name: Admium Release Checklist
 Plugin URI: www.admium.nl
 Description: Checks a list of Wordpress settings
 Author: Admium
-Version: 1.0
+Version: 0.2
 Author URI: www.admium.nl
 License: GPLv2 or later
 GitHub Plugin URI: AdmiumNL/adm-releasechecklist
@@ -112,6 +112,88 @@ function adm_releasechecklist_options() {
                             echo "<span class='error'>Voer de juiste beschrijving in voor de website, is nu: ". $website_description ."</span>";
                         } else {
                             echo "<span class='valid'>Beschrijving van de website is: " . $website_description . "</span>";
+                        }
+
+        		    ?>
+        		</td>
+    		</tr>
+    		
+    		<tr valign="middle">
+        		<th scope="row">Titel homepage</th>
+        		<td>
+        		    <?php 
+            		    
+            		    $title = get_the_title(get_option('page_on_front'));
+            		    
+            		    if (preg_match("/Homepagina/", $title) || preg_match("/Homepage/", $title) || preg_match("/Voorpagina/", $title)){
+                            echo "<span class='error'>Titel van homepage is niet correct ingesteld: ". $title ."</span>";
+                        } else {
+                            echo "<span class='valid'>Titel is herschreven en lijkt correct: " . $title . "</span>";
+                        }
+
+        		    ?>
+        		</td>
+    		</tr>
+    		
+    		<tr valign="middle">
+        		<th scope="row">Wachtwoord op website</th>
+        		<td>
+        		    <?php 
+                    
+                        $htaccess = explode("\n", file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/.htaccess"));
+                        $protected = false;
+                        foreach($htaccess as $item){
+                            if ($item == "AuthType Basic"){
+                                $protected = true;
+                            }
+                        }
+                        
+                        if ($protected){
+                            echo "<span class='error'>Website is beveiligd met .htaccess gebruiker</span>";
+                        } else {
+                            echo "<span class='valid'>Website is niet beveiligd met .htaccess gebruiker</span>";
+                        }
+
+        		    ?>
+        		</td>
+    		</tr>		
+    		
+    		<tr valign="middle">
+        		<th scope="row">E-mail voor beheerdoeleinden</th>
+        		<td>
+        		    <?php 
+                    
+                        $website_email = get_bloginfo('admin_email');
+                        if ($website_email == 'wordpress@admium.nl'){
+                            echo "<span class='error'>E-mail gaat naar: wordpress@admium.nl</span>";
+                        } else {
+                            echo "<span class='valid'>E-mail gaat naar: " . $website_email . "</span>";
+                        }
+
+
+        		    ?>
+        		</td>
+    		</tr>		
+	
+    		<tr valign="middle">
+        		<th scope="row">Ontwikkelomgeving</th>
+        		<td>
+        		    <?php 
+                    
+                        $amount = 0;
+                    
+                        global $wpdb;
+                        $result = $wpdb->get_var( "SELECT count(*) as `amount` FROM `wp_posts` WHERE `post_content` LIKE '%admiumdev.nl%'" );
+                        $amount += $result;
+                        $result = $wpdb->get_var( "SELECT count(*) as `amount` FROM `wp_postmeta` WHERE `meta_value` LIKE '%admiumdev.nl%'" );
+                        $amount += $result;
+                        $result = $wpdb->get_var( "SELECT count(*) as `amount` FROM `wp_options` WHERE `option_value` LIKE '%admiumdev.nl%'" );
+                        $amount += $result;
+                        
+                        if ($amount > 0){
+                            echo "<span class='error'>Website linkt naar admiumdev.nl (draai verhuisscript)</span>";
+                        } else {
+                            echo "<span class='valid'>Website linkt niet naar admiumdev.nl</span>";
                         }
 
         		    ?>
