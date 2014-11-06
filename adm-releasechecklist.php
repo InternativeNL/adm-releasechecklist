@@ -4,7 +4,7 @@ Plugin Name: Admium Release Checklist
 Plugin URI: www.admium.nl
 Description: Checks a list of Wordpress settings
 Author: Admium
-Version: 0.3
+Version: 0.4
 Author URI: www.admium.nl
 License: GPLv2 or later
 GitHub Plugin URI: AdmiumNL/adm-releasechecklist
@@ -217,6 +217,22 @@ if ( is_admin() ){
             		    ?>
             		</td>
         		</tr>		
+        		
+        		<tr valign="middle">
+            		<th scope="row">Site indexeren door zoekmachines</th>
+            		<td>
+            		    <?php 
+                        
+                            if (get_option('blog_public') == 0){
+                                echo "<span class='error'>De website wordt niet geindexeerd door zoekmachines!</span>";
+                            } else {
+                                echo "<span class='valid'>Zoekmachines mogen de website indexeren</span>";
+                            }
+                        
+            		    ?>
+            		</td>
+        		</tr>		
+
 
         	</table>
         				
