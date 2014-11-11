@@ -152,7 +152,19 @@ if ( is_admin() ){
                             }
                             
                             if ($protected){
-                                echo "<span class='error'>Website is beveiligd met .htaccess gebruiker, verwijder het blok uit de .htaccess file</span>";
+                                echo "<span class='error'>Website is beveiligd met .htaccess gebruiker, verwijder onderstaand blok uit de .htaccess file</span>";
+                                echo "<pre>";
+                                
+                                echo "# Password protect website (use default password file with admium / testomgeving)\n";
+                                echo "# Remove this entire block when site is live!\n";
+                                echo "    AuthName \"Testomgeving\"\n";
+                                echo "    AuthUserFile /home/admiumdev/domains/basis.admiumdev.nl/.htpasswd/.htpasswd\n";
+                                echo "    AuthGroupFile /dev/null\n";
+                                echo "    AuthType Basic\n";
+                                echo "    require valid-user\n";
+                                echo "# / End password protection";
+
+                                echo "</pre>";
                             } else {
                                 echo "<span class='valid'>Website is niet beveiligd met .htaccess gebruiker</span>";
                             }
@@ -177,7 +189,13 @@ if ( is_admin() ){
                             }
                             
                             if (!$correctRedirect){
-                                echo "<span class='error'>Website redirect niet correct naar hoofddomein (".$homeURL."), pas aan in .htaccess</span>";
+                                echo "<span class='error'>Website redirect niet correct naar hoofddomein (".$homeURL."), stel dit in .htaccess</span>";
+                                echo "<br/>";
+                                echo "<pre>";
+                                echo "# Domein forceren\n";
+                                echo "#RewriteCond %{HTTP_HOST} !^". $homeURL ."$ [NC]\n";
+                                echo "#RewriteRule ^(.*)$ http://". $homeURL ."/$1 [L,R=301]";
+                                echo "</pre>";
                             } else {
                                 echo "<span class='valid'>Website bevat correcte redirect naar hoofddomein</span>";
                             }
