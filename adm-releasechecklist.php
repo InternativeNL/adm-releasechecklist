@@ -4,7 +4,7 @@ Plugin Name: Admium Release Checklist
 Plugin URI: www.admium.nl
 Description: Checks a list of Wordpress settings
 Author: Admium
-Version: 0.4
+Version: 0.5
 Author URI: www.admium.nl
 License: GPLv2 or later
 GitHub Plugin URI: AdmiumNL/adm-releasechecklist
@@ -155,6 +155,31 @@ if ( is_admin() ){
                                 echo "<span class='error'>Website is beveiligd met .htaccess gebruiker, verwijder het blok uit de .htaccess file</span>";
                             } else {
                                 echo "<span class='valid'>Website is niet beveiligd met .htaccess gebruiker</span>";
+                            }
+    
+            		    ?>
+            		</td>
+        		</tr>
+        		
+        		<tr valign="middle">
+            		<th scope="row">Redirect domein naar www.</th>
+            		<td>
+            		    <?php 
+                        
+                            $homeURL = preg_replace("/https?:\/\//", "", get_option('siteurl'));
+                        
+                            $htaccess = explode("\n", file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/.htaccess"));
+                            $correctRedirect = false;
+                            foreach($htaccess as $item){
+                                if (trim($item) == "RewriteCond %{HTTP_HOST} !^".$homeURL."$ [NC]"){
+                                    $correctRedirect = true;
+                                }
+                            }
+                            
+                            if (!$correctRedirect){
+                                echo "<span class='error'>Website redirect niet correct naar hoofddomein (".$homeURL."), pas aan in .htaccess</span>";
+                            } else {
+                                echo "<span class='valid'>Website bevat correcte redirect naar hoofddomein</span>";
                             }
     
             		    ?>
