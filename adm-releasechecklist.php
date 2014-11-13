@@ -4,7 +4,7 @@ Plugin Name: Admium Release Checklist
 Plugin URI: www.admium.nl
 Description: Checks a list of Wordpress settings
 Author: Admium
-Version: 0.5
+Version: 0.6
 Author URI: www.admium.nl
 License: GPLv2 or later
 GitHub Plugin URI: AdmiumNL/adm-releasechecklist
@@ -57,16 +57,16 @@ if ( is_admin() ){
             		<td>
             		    <?php 
                             if ( ! class_exists( 'Yoast_GA_Options' ) ) {
-                            	echo "<span class='error'>Plugin niet geinstalleerd</span>";
+                            	echo "<span class='error'>Plugin niet geïnstalleerd!</span>";
                             } else {
                                 
                                 global $yoast;
                                 $yoast = new Yoast_GA_Options;
                                 $ua_code = $yoast->get_tracking_code();
                                 if ($ua_code == "UA-000000-0") {
-                                    echo "<span class='error'>Incorrecte code (". $ua_code .")</span>";
+                                    echo "<span class='error'>Incorrecte tracking code (". $ua_code .")</span>";
                                 } else {
-                                    echo "<span class='valid'>Correcte code (". $ua_code .")</span>";
+                                    echo "<span class='valid'>Correcte tracking code (". $ua_code .")</span>";
                                 }
                                 
                             }
@@ -82,7 +82,7 @@ if ( is_admin() ){
                             if (AUTH_KEY == "put your unique phrase here"){
                                 echo "<span class='error'>Voer een unieke salt & peper in wp-config.php</span>";
                             } else {
-                                echo "<span class='valid'>Willekeurig ingesteld (pas aan als site een kloon is)</span>";
+                                echo "<span class='valid'>Correct ingesteld (let op: pas deze aan als de site een kloon is)</span>";
                             }
     
             		    ?>
@@ -96,7 +96,7 @@ if ( is_admin() ){
                         
                             $website_name = get_bloginfo('name');
                             if ($website_name == '[ADMIUM_SITE_TITLE]'){
-                                echo "<span class='error'>Voer de juiste naam in voor de website titel, is nu: ". $website_name ."</span>";
+                                echo "<span class='error'>De website heeft geen correcte naam: ". $website_name ."</span>";
                             } else {
                                 echo "<span class='valid'>Naam van de website is: " . $website_name . "</span>";
                             }
@@ -112,7 +112,7 @@ if ( is_admin() ){
                         
                             $website_description = get_bloginfo('description');
                             if ($website_description == '[ADMIUM_SITE_DESCRIPTION]'){
-                                echo "<span class='error'>Voer de juiste beschrijving in voor de website, is nu: ". $website_description ."</span>";
+                                echo "<span class='error'>De website heeft geen correcte beschrijving: ". $website_description ."</span>";
                             } else {
                                 echo "<span class='valid'>Beschrijving van de website is: " . $website_description . "</span>";
                             }
@@ -129,7 +129,7 @@ if ( is_admin() ){
                 		    $title = get_the_title(get_option('page_on_front'));
                 		    
                 		    if (preg_match("/Homepagina/", $title) || preg_match("/Homepage/", $title) || preg_match("/Voorpagina/", $title)){
-                                echo "<span class='error'>Titel van homepage is niet correct ingesteld: ". $title ."</span>";
+                                echo "<span class='error'>Titel van homepage is niet correct: ". $title ."</span>";
                             } else {
                                 echo "<span class='valid'>Titel is herschreven en lijkt correct: " . $title . "</span>";
                             }
@@ -152,7 +152,7 @@ if ( is_admin() ){
                             }
                             
                             if ($protected){
-                                echo "<span class='error'>Website is beveiligd met .htaccess gebruiker, verwijder onderstaand blok uit de .htaccess file</span>";
+                                echo "<span class='error'>Website is beveiligd middels .htaccess verwijder onderstaand blok uit de .htaccess file bij livegang</span>";
                                 echo "<pre>";
                                 
                                 echo "# Password protect website (use default password file with admium / testomgeving)\n";
@@ -166,7 +166,7 @@ if ( is_admin() ){
 
                                 echo "</pre>";
                             } else {
-                                echo "<span class='valid'>Website is niet beveiligd met .htaccess gebruiker</span>";
+                                echo "<span class='valid'>Website is niet beveiligd met .htaccess, is door iedereen te bezoeken</span>";
                             }
     
             		    ?>
@@ -189,7 +189,7 @@ if ( is_admin() ){
                             }
                             
                             if (!$correctRedirect){
-                                echo "<span class='error'>Website redirect niet correct naar hoofddomein (".$homeURL."), stel dit in .htaccess</span>";
+                                echo "<span class='error'>Website redirect niet correct naar ingestelde hoofddomein (".$homeURL."), stel dit in .htaccess</span>";
                                 echo "<br/>";
                                 echo "<pre>";
                                 echo "# Domein forceren\n";
@@ -197,7 +197,7 @@ if ( is_admin() ){
                                 echo "#RewriteRule ^(.*)$ http://". $homeURL ."/$1 [L,R=301]";
                                 echo "</pre>";
                             } else {
-                                echo "<span class='valid'>Website bevat correcte redirect naar hoofddomein</span>";
+                                echo "<span class='valid'>Website bevat correcte redirect naar ingestelde hoofddomein: ". $homeURL ."</span>";
                             }
     
             		    ?>
@@ -211,7 +211,7 @@ if ( is_admin() ){
                         
                             $website_email = get_bloginfo('admin_email');
                             if ($website_email == 'wordpress@admium.nl'){
-                                echo "<span class='error'>E-mail gaat naar: wordpress@admium.nl</span>";
+                                echo "<span class='error'>E-mail gaat naar: wordpress@admium.nl pas dit aan naar adres van klant</span>";
                             } else {
                                 echo "<span class='valid'>E-mail gaat naar: " . $website_email . "</span>";
                             }
@@ -237,7 +237,7 @@ if ( is_admin() ){
                             $amount += $result;
                             
                             if ($amount > 0){
-                                echo "<span class='error'>Website linkt naar admiumdev.nl (draai verhuisscript)</span>";
+                                echo "<span class='error'>In de content wordt gelinkt naar admiumdev.nl (draai verhuisscript)</span>";
                             } else {
                                 echo "<span class='valid'>Website linkt niet naar admiumdev.nl</span>";
                             }
@@ -267,7 +267,7 @@ if ( is_admin() ){
             		    <?php 
                         
                             if (get_option('blog_public') == 0){
-                                echo "<span class='error'>De website wordt niet geindexeerd door zoekmachines!</span>";
+                                echo "<span class='error'>De website wordt niet geïndexeerd door zoekmachines!</span>";
                             } else {
                                 echo "<span class='valid'>Zoekmachines mogen de website indexeren</span>";
                             }
