@@ -4,7 +4,7 @@ Plugin Name: Admium Release Checklist
 Plugin URI: www.admium.nl
 Description: Checks a list of Wordpress settings
 Author: Admium
-Version: 0.6
+Version: 0.7
 Author URI: www.admium.nl
 License: GPLv2 or later
 GitHub Plugin URI: AdmiumNL/adm-releasechecklist
@@ -193,8 +193,8 @@ if ( is_admin() ){
                                 echo "<br/>";
                                 echo "<pre>";
                                 echo "# Domein forceren\n";
-                                echo "#RewriteCond %{HTTP_HOST} !^". $homeURL ."$ [NC]\n";
-                                echo "#RewriteRule ^(.*)$ http://". $homeURL ."/$1 [L,R=301]";
+                                echo "RewriteCond %{HTTP_HOST} !^". $homeURL ."$ [NC]\n";
+                                echo "RewriteRule ^(.*)$ http://". $homeURL ."/$1 [L,R=301]";
                                 echo "</pre>";
                             } else {
                                 echo "<span class='valid'>Website bevat correcte redirect naar ingestelde hoofddomein: ". $homeURL ."</span>";
