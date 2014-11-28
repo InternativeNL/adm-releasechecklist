@@ -4,7 +4,7 @@ Plugin Name: Admium Release Checklist
 Plugin URI: www.admium.nl
 Description: Checks a list of Wordpress settings
 Author: Admium
-Version: 0.7
+Version: 0.8
 Author URI: www.admium.nl
 License: GPLv2 or later
 GitHub Plugin URI: AdmiumNL/adm-releasechecklist
@@ -126,10 +126,17 @@ if ( is_admin() ){
             		<td>
             		    <?php 
                 		    
-                		    $title = get_the_title(get_option('page_on_front'));
+                		    $originalTitle  = get_the_title(get_option('page_on_front'));
+                		    $seoTitle       = get_post_meta(get_option('page_on_front'), '_yoast_wpseo_title', true);
+                		    
+                		    if (strlen($seoTitle) > 0){
+                    		    $title = $seoTitle;
+                		    } else  {
+                    		    $title = $originalTitle;
+                		    }
                 		    
                 		    if (preg_match("/Homepagina/", $title) || preg_match("/Homepage/", $title) || preg_match("/Voorpagina/", $title)){
-                                echo "<span class='error'>Titel van homepage is niet correct: ". $title ."</span>";
+                                echo "<span class='error'>Titel van homepage is mogelijk niet correct: ". $title ."</span>";
                             } else {
                                 echo "<span class='valid'>Titel is herschreven en lijkt correct: " . $title . "</span>";
                             }
