@@ -4,7 +4,7 @@ Plugin Name: Admium Release Checklist
 Plugin URI: www.admium.nl
 Description: Checks a list of Wordpress settings
 Author: Admium
-Version: 0.9
+Version: 0.9.1
 Author URI: www.admium.nl
 License: GPLv2 or later
 GitHub Plugin URI: AdmiumNL/adm-releasechecklist
@@ -13,15 +13,15 @@ GitHub Plugin URI: AdmiumNL/adm-releasechecklist
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Only show to admin users who can update Wordpress
-if ( is_admin() && current_user_can('update_core') ){
+if ( is_admin() ){
     
     function adm_releasechecklist_menu() {
-    	add_menu_page( 'Admium Checklist', 'Admium Checklist', 'manage_options', 'adm-releasechecklist', 'adm_releasechecklist_options' );
+    	add_menu_page( 'Admium Checklist', 'Admium Checklist', 'update_core', 'adm-releasechecklist', 'adm_releasechecklist_options' );
     }
     add_action( 'admin_menu', 'adm_releasechecklist_menu' );
     
     function adm_releasechecklist_options() {
-    	if ( !current_user_can( 'manage_options' ) )  {
+    	if ( !current_user_can( 'update_core' ) )  {
     		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
     	}
     		
