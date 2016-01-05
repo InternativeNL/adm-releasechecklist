@@ -4,7 +4,7 @@ Plugin Name: Internative Release Checklist
 Plugin URI: www.internative.nl
 Description: Checks a list of Wordpress settings
 Author: Internative
-Version: 0.9.2
+Version: 0.9.3
 Author URI: www.internative.nl
 License: GPLv2 or later
 GitHub Plugin URI: InternativeNL/adm-releasechecklist
